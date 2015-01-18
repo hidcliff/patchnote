@@ -31,21 +31,20 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(cookieParser());
 
-console.log(config);
-
-app.use(express.static(path.join(config.root, 'public')));
-app.use(morgan('dev'));
-app.set('appPath', path.join(config.root, 'public'));
-
 // development only
 if (env === 'development') {
-	app.use(errorHandler());
+  app.use(require('connect-livereload')());
+  app.use(errorHandler());
 }
 
 // production only
 if (env === 'production') {
 	// TODO
 }
+
+app.use(express.static(path.join(config.root, 'public')));
+app.set('appPath', path.join(config.root, 'public'));
+app.use(morgan('dev'));
 
 
 /**
