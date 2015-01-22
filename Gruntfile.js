@@ -1,6 +1,7 @@
 /*global module:false*/
 module.exports = function(grunt) {
   require('jit-grunt')(grunt, {
+    express: 'grunt-express-server',
     useminPrepare: 'grunt-usemin'
   });
   require('time-grunt')(grunt);
