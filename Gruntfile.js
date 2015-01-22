@@ -1,8 +1,36 @@
 /*global module:false*/
 module.exports = function(grunt) {
+  require('jit-grunt')(grunt, {
+    useminPrepare: 'grunt-usemin'
+  });
+  require('time-grunt')(grunt);
+
 
   // Project configuration.
   grunt.initConfig({
+    // Project settings
+    pkg: grunt.file.readJSON('package.json'),
+
+    config: {
+      dist: 'dist',
+      client: 'public'
+    },
+
+    app: {
+      public: 'public',
+      server: 'server',
+      dist: 'dist'
+    },
+
+
+    dir: {
+      public: 'public',
+      server: 'server',
+      dist: 'dist'
+    },
+
+
+
     express: {
       options: {
         port: process.env.PORT || 4000,
@@ -10,12 +38,12 @@ module.exports = function(grunt) {
       },
       dev: {
         options: {
-          script: 'server/app.js'
+          script: '<%=app.server%>/app.js'
         }
       },
       prod: {
         options: {
-          script: 'dist/server/app.js'
+          script: '<%=app.dist%>/server/app.js'
         }
       }
     },
@@ -26,8 +54,8 @@ module.exports = function(grunt) {
       },
       livereload: {
         files: [
-          'public/**/*.js',
-          'public/**/*.html'
+          '<%=app.public%>/**/*.js',
+          '<%=app.public%>/**/*.html'
         ],
         options: {
           livereload: true
@@ -36,7 +64,7 @@ module.exports = function(grunt) {
 
       express: {
         files: [
-          'server/**/*.{js,json}'
+          '<%=app.server%>/**/*.{js,json}'
         ],
         tasks: ['express:dev', 'wait'],
         options: {
@@ -50,19 +78,118 @@ module.exports = function(grunt) {
       all: {
         path: 'http://localhost:<%=express.options.port%>'
       }
+    },
+
+    jshint: {
+      options: {
+        reporter: require('jshint-stylish'),
+        jshintrc: '.jshintrc'
+      },
+      public: {
+        src: [
+          '<%=app.public%>/js/**/*.js',
+          '!<%=app.public%>/js/**/*.spec.js'
+        ]
+      },
+      public_test: {
+        src: [
+          '<%=app.public%>/js/**/*.spec.js'
+        ]
+      },
+      server: {
+        src: [
+          '<%=app.server%>/**/*.js'
+        ]
+      }
+    },
+
+
+    clean: {
+      dist: {
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%=app.dist%>/*'
+          ]
+        }]
+      },
+      server: '.tmp'
+    },
+
+    copy: {
+      dist: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%=app.public%>',
+            src: [
+              '*.{ico,png.txt}',
+              'index.html'
+            ],
+            dest: '<%=app.dist%>/public'
+          },
+          {
+            expand: true,
+            src: ['server/**/*', 'package.json'],
+            dest: '<%=app.dist%>'
+          }
+
+        ]
+      }
+    },
+
+    injector: {
+      bower_dependencies: {
+        options: {
+          bowerPrefix: 'bower:',
+          relative: true,
+          ignorePath: '<%=app.public%>/'
+        },
+        files: {
+          '<%=app.public%>/index.html': [
+            'bower.json'
+          ]
+        }
+      },
+      local_dependencies: {
+        options: {
+          relative: true,
+          ignorePath: '<%=app.public%>/'
+        },
+        files: {
+          '<%=app.public%>/index.html': [
+            '<%=app.public%>/js/**/*.js',
+            '<%=app.public%>/css/**/*.css'
+          ]
+        }
+      }
+    },
+
+    useminPrepare: {
+      html: ['<%=app.public%>/index.html'],
+      options: {
+        dest: '<%=app.dist%>/public'
+      }
+    },
+
+    usemin: {
+      html: ['<%=app.dist%>/public/**/*.html'],
+      options: {
+        dirs: [
+          '<%=app.dist%>/public'
+        ]
+      }
+    },
+
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        singleRun: true
+      }
     }
   });
 
-  // These plugins provide necessary tasks.
-  /*
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  */
-  grunt.loadNpmTasks('grunt-express-server');
-  grunt.loadNpmTasks('grunt-open');
-  grunt.loadNpmTasks('grunt-contrib-watch');
 
 
   grunt.registerTask('wait', function () {
@@ -77,15 +204,41 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('serve', [
+    'injector',
     'express:dev',
     'wait',
     'open',
     'watch'
   ]);
 
+  grunt.registerTask('test', function(target) {
+    if (target === 'client') {
+      return grunt.task.run([
+        'karma'
+      ]);
+    } else {
+      return grunt.task.run([
+        'test:client'
+      ]);
+    }
+  });
+
+  grunt.registerTask('build', [
+    'clean:dist',
+    'injector',
+    'copy',
+    'useminPrepare',
+    'concat',
+    'uglify',
+    'cssmin',
+    'usemin'
+  ]);
+
+
   // Default task.
-  //grunt.registerTask('default', ['jshint', 'qunit', 'concat', 'uglify']);
-  grunt.registerTask('default', ['watch']);
-
-
+  grunt.registerTask('default', [
+    'jshint',
+    'test',
+    'build'
+  ]);
 };

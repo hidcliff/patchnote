@@ -1,26 +1,49 @@
 <!DOCTYPE html>
-<html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <base href="/">
-  <!-- favicon.ico and apple-touch-icon -->
-  <!--<link rel="apple-touch-icon" href="apple-touch-icon.png" />-->
   <title></title>
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!--<link rel="apple-touch-icon" href="apple-touch-icon.png" />-->
 
-  <link rel="stylesheet" href="css/main.css" />
+  <!-- build:css css/vendor.min.css -->
+    <!-- injector:bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
+    <!-- endinjector -->
+  <!-- endbuild -->
+
+  <!-- build:css css/app.min.css -->
+    <!-- injector:css -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- endinjector -->
+  <!-- endbuild -->
 </head>
 <body ng-app="myApp">
   <div ui-view=""></div>
 
-  <script src="bower_components/jquery/dist/jquery.js"></script>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <!-- build:js js/vendor.min.js -->
+    <!-- injector:bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <!-- endinjector -->
+  <!-- endbuild -->
 
-  <script src="js/app.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/main.controller.js"></script>
+  <!-- build:js js/app.min.js -->
+    <!-- injector:js -->
+    <script src="js/app.js"></script>
+    <script src="js/main.controller.js"></script>
+    <script src="js/main.controller.spec.js"></script>
+    <script src="js/main.js"></script>
+    <!-- endinjector -->
+  <!-- endbuild -->
 </body>
 </html>
