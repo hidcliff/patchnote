@@ -1,7 +1,17 @@
 'use strict';
 
-var app = angular.module('myApp');
+angular
+  .module('myApp')
+  .controller('MainCtrl', MainCtrl);
 
-app.controller('MainCtrl', ['$scope', function($scope) {
+function MainCtrl($scope, $http) {
   $scope.message = 'Angular Express Seed!';
-}]);
+
+  $scope.data = {};
+
+  $http.get('/api/data').success(function(res) {
+    if (res && res.success) {
+      $scope.data = res;
+    }
+  });
+}

@@ -88,3 +88,5 @@ server.on('error', function(error) {
 server.listen(port, function() {
 	console.log('Express server listening on port ' + port);
 });
+
+module.exports = app;

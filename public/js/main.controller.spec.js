@@ -1,15 +1,17 @@
 'use strict';
 
 describe('Controller: MainCtrl', function () {
-
-  // load the controller's module
   beforeEach(module('myApp'));
 
-  var MainCtrl;
+  var createController, $httpBackend;
 
   // Initialize the controller
-  beforeEach(inject(function(_$controller_) {
-    MainCtrl = _$controller_;
+  beforeEach(inject(function($injector) {
+    $httpBackend = $injector.get('$httpBackend');
+    $httpBackend.expectGET('/api/data')
+      .respond({success:true});
+
+    createController = $injector.get('$controller');
   }));
 
   describe('$scope.message', function() {
@@ -17,12 +19,16 @@ describe('Controller: MainCtrl', function () {
 
     beforeEach(function() {
       $scope = {};
-      controller = MainCtrl('MainCtrl', {$scope: $scope});
+      controller = createController('MainCtrl', {$scope: $scope});
     });
 
-    it('should be true', function () {
+    it('should set a message', function () {
       expect($scope.message).toBe('Angular Express Seed!');
     });
-  });
 
+    it('should get a response', function () {
+      $httpBackend.flush();
+      expect($scope.data).toEqual({success:true});
+    });
+  });
 });

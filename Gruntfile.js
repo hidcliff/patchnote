@@ -132,6 +132,14 @@ module.exports = function(grunt) {
           },
           {
             expand: true,
+            cwd: '<%=app.public%>/html/',
+            src: [
+              '**/*'
+            ],
+            dest: '<%=app.dist%>/public/html'
+          },
+          {
+            expand: true,
             src: ['server/**/*', 'package.json'],
             dest: '<%=app.dist%>'
           }
@@ -161,7 +169,8 @@ module.exports = function(grunt) {
         files: {
           '<%=app.public%>/index.html': [
             '<%=app.public%>/js/**/*.js',
-            '<%=app.public%>/css/**/*.css'
+            '<%=app.public%>/css/**/*.css',
+            '!<%=app.public%>/js/**/*.spec.js',
           ]
         }
       }
@@ -183,11 +192,29 @@ module.exports = function(grunt) {
       }
     },
 
+    ngAnnotate: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/concat',
+          src: '*/**.js',
+          dest: '.tmp/concat'
+        }]
+      }
+    },
+
     karma: {
       unit: {
         configFile: 'karma.conf.js',
         singleRun: true
       }
+    },
+
+    mochaTest: {
+      options: {
+        reporter: 'spec'
+      },
+      src: ['server/**/*.spec.js']
     }
   });
 
@@ -204,21 +231,42 @@ module.exports = function(grunt) {
     }, 1500);
   });
 
-  grunt.registerTask('serve', [
-    'injector',
-    'express:dev',
-    'wait',
-    'open',
-    'watch'
-  ]);
+  grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
+    this.async();
+  });
+
+  grunt.registerTask('serve', function(target) {
+    if (target === 'prod') {
+      return grunt.task.run([
+        'build',
+        'express:prod',
+        'wait',
+        'open',
+        'express-keepalive'
+      ]);
+    }
+
+    return grunt.task.run([
+      'injector',
+      'express:dev',
+      'wait',
+      'open',
+      'watch'
+    ])
+  });
 
   grunt.registerTask('test', function(target) {
     if (target === 'client') {
       return grunt.task.run([
         'karma'
       ]);
+    } else if (target === 'server') {
+      return grunt.task.run([
+        'mochaTest'
+      ]);
     } else {
       return grunt.task.run([
+        'test:server',
         'test:client'
       ]);
     }
@@ -230,6 +278,7 @@ module.exports = function(grunt) {
     'copy',
     'useminPrepare',
     'concat',
+    'ngAnnotate',
     'uglify',
     'cssmin',
     'usemin'
