@@ -1,0 +1,9 @@
+.welcome {
+    width: 1024px;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.welcome p {
+    padding: 5px;
+}
