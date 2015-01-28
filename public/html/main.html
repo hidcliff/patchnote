@@ -1,4 +1,149 @@
-<div class="welcome">
-  <h1>Welcome to {{message}}</h1>
-  <p>This is a skeleton for an Angular web app with Node.</p>
+
+<div class="main-wrapper">
+  <aside class="sidebar">
+    <div class="logo"><img src="../img/patchnote.png" width="150px"></div>
+    <div class="sidebar-nav">
+      <dl class="group my-documents" sidebar-file-group toggle-sidebar>
+        <dt><a href="#" class="toggle-list">My Documents<i class="fa fa-caret-up toggle-ico" data-down-class="fa-caret-down" data-up-class="fa-caret-up"></i></a></dt>
+        <dd>
+          <ul class="list">
+            <li ng-repeat="document in fileList" ng-class="{selected: document.id === current.id}">
+              <a href="#" class="documents" data-doc-id="{{document.id}}" patch-button ng-click="switchDocument(document.id)">
+                <i class="fa fa-file-text-o"></i>
+                <div class="obj">{{document.title}}</div>
+                <span class="remove" ng-click="removeDocument(document.id, $event)"><i class="fa fa-times"></i></span>
+              </a>
+            </li>
+          </ul>
+          <ul class="new-documents">
+            <li class="new">
+              <a href="#" ng-click="new()" patch-button>
+                <i class="fa fa-plus"></i>
+                <div>New Documents</div>
+              </a>
+            </li>
+          </ul>
+        </dd>
+      </dl>
+      <dl class="group save-to" toggle-sidebar>
+        <dt><a href="#" class="toggle-list">Save to<i class="fa fa-caret-up toggle-ico" data-down-class="fa-caret-down" data-up-class="fa-caret-up"></i></a></dt>
+        <dd>
+          <ul>
+            <li ng-repeat="svc in services" ng-class="{unlink: !svc.linked}">
+              <a href="#" ng-click="saveTo(svc.id)">
+                <i class="fa {{svc.icon}}"></i><!--<i class="fa fa-cloud"></i>-->
+                <div class="cloud">{{svc.title}}</div>
+              </a>
+            </li>
+          </ul>
+        </dd>
+      </dl>
+      <dl class="group my-links" toggle-sidebar>
+        <dt><a href="#" class="toggle-list">My Links<i class="fa fa-caret-up toggle-ico" data-down-class="fa-caret-down" data-up-class="fa-caret-up"></i></a></dt>
+        <dd>
+          <ul>
+            <li ng-repeat="svc in services" ng-class="{unlink: !svc.linked}">
+              <a href="#" ng-click="unlink(svc.id)" ng-if="svc.linked">
+                <i class="fa {{svc.icon}}"></i>
+                <div class="cloud">{{svc.linkTitle}} {{svc.title}}</div>
+              </a>
+              <a href="#" ng-click="link(svc.id)" ng-if="!svc.linked">
+                <i class="fa {{svc.icon}}"></i>
+                <div class="cloud">{{svc.linkTitle}} {{svc.title}}</div>
+              </a>
+            </li>
+          </ul>
+        </dd>
+      </dl>
+      <dl class="group help" toggle-sidebar>
+        <dt><a href="#" class="toggle-list">Help<i class="fa fa-caret-up toggle-ico" data-down-class="fa-caret-down" data-up-class="fa-caret-up"></i></a></dt>
+        <dd>
+          <ul>
+            <li>
+              <a href="https://github.com/hidcliff/patchnote/issues" target="_blank" patch-button>
+                <i class="fa fa-question-circle"></i>
+                <div class="cloud">Having Problem?</div>
+              </a>
+            </li>
+            <li>
+              <a href="#" patch-button>
+                <i class="fa fa-envelope-o"></i>
+                <div class="cloud">Contact Us</div>
+              </a>
+            </li>
+            <li>
+              <a href="#" patch-button>
+                <i class="fa fa-question"></i>
+                <div class="cloud">Cheat Sheet</div>
+              </a>
+            </li>
+          </ul>
+        </dd>
+      </dl>
+      <div class="adsense" data-adsense>
+        <!-- patchnote1 -->
+        <!--
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:200px;height:200px"
+             data-ad-client="ca-pub-3193233847619812"
+             data-ad-slot="2154517881"></ins>
+        <script>
+          try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          } catch(e) {}
+        </script>
+        -->
+      </div>
+    </div>
+  </aside>
+
+  <div class="content-wrap" toggle-sidebar>
+    <div class="protector"></div>
+
+    <nav class="navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="#" class="toggle" patch-button>
+            <div class="btn-container">
+              <img src="../img/psharp.png" width="25px">
+              <!--span class="icon-bar"></span-->
+            </div>
+          </a>
+          <a class="navbar-brand" href="#"><!--img src="../img/patchnote.png" width="150px"--></a>
+        </div>
+
+        <ul class="navbar-right">
+          <li><a href="#" ng-click="new()" patch-button><i class="fa fa-plus"></i> <span class="navbar-lg"> New Document</span></a></li>
+          <li class="dropdown navbar-lg">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" patch-button><i class="fa fa-cloud-upload"></i> Save to <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li ng-repeat="svc in services" ng-class="{unlink: !svc.linked}">
+                <a href="#" ng-click="saveTo(svc.id)"><i class="fa {{svc.icon}}"></i> {{svc.title}}</a>
+              </li>
+            </ul>
+          </li>
+          <li class="navbar-sm"><a href="#" ng-click="show($event)" patch-button><i class="fa fa-eye"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid content">
+      <div class="row">
+        <div class="title-bar">
+          <input type="text" ng-model="current.title" placeholder="{{placeholder.title}}" auto-save />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 edit-pane pane">
+          <textarea id="editor" ng-model="current.content" placeholder="{{placeholder.content}}" auto-save></textarea>
+        </div>
+        <div class="col-sm-6 view-pane pane">
+          <div id="preview" ng-bind-html="parseMarkdown()"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
 </div>

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp')
+angular.module('patchnoteApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('main', {

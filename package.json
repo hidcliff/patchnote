@@ -1,5 +1,5 @@
 {
-  "name": "app-name",
+  "name": "patchnote",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
     "body-parser": "~1.10.1",
     "compression": "^1.3.0",
     "cookie-parser": "~1.3.3",
+    "dbox": "^0.6.3",
     "ejs": "~1.0.0",
     "errorhandler": "^1.3.2",
     "express": "~4.10.6",
@@ -27,6 +28,7 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-uglify": "~0.5.0",
     "grunt-contrib-watch": "~0.6.1",
+    "grunt-env": "^0.4.2",
     "grunt-express-server": "^0.4.19",
     "grunt-injector": "^0.6.0",
     "grunt-karma": "^0.10.1",

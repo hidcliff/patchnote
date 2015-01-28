@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Controller: MainCtrl', function () {
-  beforeEach(module('myApp'));
+  beforeEach(module('patchnoteApp'));
 
   var createController, $httpBackend;
 

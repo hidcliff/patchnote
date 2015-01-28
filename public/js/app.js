@@ -1,6 +1,10 @@
 'use strict';
 
-angular.module('myApp', ['ui.router'])
+angular.module('patchnoteApp', [
+  'ngSanitize',
+  'ui.router',
+  'ui.bootstrap'
+])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider
       .otherwise('/');

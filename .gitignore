@@ -4,3 +4,4 @@ public/bower_components
 .idea
 npm-debug.log
 .tmp
+server/config/local.js

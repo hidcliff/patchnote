@@ -1,7 +1,13 @@
 'use strict';
 
 module.exports = function(app) {
-  app.use('/api/data', require('./routes/data'));
+  app.use('/api/dropbox', require('./routes/dropbox'));
+
+  /**
+   * related to storage services
+   */
+  app.use('/link', require('./routes/link'));
+  app.use('/oauth', require('./routes/oauth'));
 
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
     .get(function(req, res) {

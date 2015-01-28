@@ -9,5 +9,10 @@ module.exports = {
   port: process.env.PORT || 4000,
 
   // Root path
-  root: path.normalize(__dirname + '/../..')
+  root: path.normalize(__dirname + '/../..'),
+
+  dropbox: {
+    appKey: process.env.DROPBOXAPPKEY,
+    appSecret: process.env.DROPBOXAPPSECRET
+  }
 };

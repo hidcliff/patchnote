@@ -1,0 +1,23 @@
+.modal-body {
+  background-color: #e45656;
+  padding: 20px;
+  color: #fff;
+  font-family: 'Open Sans', 'Lucida Grande';
+  border-radius: 5px;
+}
+.modal-body {
+  background-color: #3f83f1;
+}
+.modal-body.warn {
+  background-color: #3f83f1;
+}
+.modal-body span {
+  display: block;
+  width: 34px;
+  float: left;
+  font-size: 24px;
+}
+.modal-body p {
+  display: block;
+  margin:0;
+}
