@@ -37,7 +37,6 @@ app.service('googleDrive', ['$http', function($http) {
 
   $http.get('/api/googledrive/').success((function(response) {
     if (response) {
-      console.log(response.isLinked);
       this.service.linked = response.isLinked;
       if (response.isLinked) {
         this.service.linkTitle = 'Unlink';

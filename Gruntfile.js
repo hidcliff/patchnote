@@ -2,7 +2,8 @@
 module.exports = function(grunt) {
   require('jit-grunt')(grunt, {
     express: 'grunt-express-server',
-    useminPrepare: 'grunt-usemin'
+    useminPrepare: 'grunt-usemin',
+    buildcontrol: 'grunt-build-control'
   });
   require('time-grunt')(grunt);
 
@@ -11,14 +12,11 @@ module.exports = function(grunt) {
   grunt.initConfig({
     // Project settings
     pkg: grunt.file.readJSON('package.json'),
+    config: require('./server/config/local'),
     app: {
       public: 'public',
       server: 'server',
       dist: 'dist'
-    },
-
-    env: {
-      local: require('./server/config/local') || {}
     },
 
     express: {
@@ -67,7 +65,7 @@ module.exports = function(grunt) {
 
     open: {
       all: {
-        path: 'http://localhost:<%=express.options.port%>'
+        path: 'http://<%=config.host%>:<%=express.options.port%>'
       }
     },
 
@@ -94,6 +92,21 @@ module.exports = function(grunt) {
       }
     },
 
+    buildcontrol: {
+      options: {
+        dir: 'dist',
+        commit: true,
+        push: true,
+        connectCommits: false,
+        message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+      },
+      heroku: {
+        options: {
+          remote: '<%=config.heroku.remote%>',
+          branch: 'master'
+        }
+      }
+    },
 
     clean: {
       dist: {
@@ -116,17 +129,12 @@ module.exports = function(grunt) {
             cwd: '<%=app.public%>',
             src: [
               '*.{ico,png.txt}',
+              'fonts/**/*',     // if you're using the fonts of Bootstrap or FontAwesome, copy the fonts to this fonts directory.
+              'html/**/*',
+              'img/**/*',
               'index.html'
             ],
             dest: '<%=app.dist%>/public'
-          },
-          {
-            expand: true,
-            cwd: '<%=app.public%>/html/',
-            src: [
-              '**/*'
-            ],
-            dest: '<%=app.dist%>/public/html'
           },
           {
             expand: true,
@@ -237,7 +245,6 @@ module.exports = function(grunt) {
     }
 
     return grunt.task.run([
-      'env',
       'injector',
       'express:dev',
       'wait',
@@ -275,6 +282,10 @@ module.exports = function(grunt) {
     'usemin'
   ]);
 
+  grunt.registerTask('deploy', [
+    'build',
+    'buildcontrol:heroku'
+  ]);
 
   // Default task.
   grunt.registerTask('default', [

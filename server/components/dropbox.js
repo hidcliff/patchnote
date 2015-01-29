@@ -1,15 +1,18 @@
 
 var dbox = require('dbox');
 var auth = require('./auth');
-var config = require('../config');
+var config = require('../config/local');
 
 
-module.exports = (function(appKey, appSecret) {
-  var app = dbox.app({
-    'app_key': appKey,
-    'app_secret': appSecret
-  });
+module.exports = (function() {
+  var APP_KEY = config.dropbox.appKey;
+  var APP_SECRET = config.dropbox.appSecret;
+
   var client = null;
+  var app = dbox.app({
+    'app_key': APP_KEY,
+    'app_secret': APP_SECRET
+  });
 
   function _getClient(req) {
     if (_isLinked(req)) {
@@ -118,4 +121,4 @@ module.exports = (function(appKey, appSecret) {
       }, 200);
     }
   }
-}(config.dropbox.appKey, config.dropbox.appSecret));
+}());
