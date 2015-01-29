@@ -35,8 +35,7 @@ app.service('googleDrive', ['$http', function($http) {
     unlinkUrl: '/api/googledrive/unlink'
   };
 
-  /*
-  $http.get('/api/dropbox/').success((function(response) {
+  $http.get('/api/googledrive/').success((function(response) {
     if (response) {
       console.log(response.isLinked);
       this.service.linked = response.isLinked;
@@ -45,7 +44,6 @@ app.service('googleDrive', ['$http', function($http) {
       }
     }
   }).bind(this));
-  */
 }]);
 
 app.factory('apiService', ['dropbox', 'googleDrive', function(dropbox, googleDrive) {

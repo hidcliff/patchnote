@@ -2,6 +2,7 @@
 
 module.exports = function(app) {
   app.use('/api/dropbox', require('./routes/dropbox'));
+  app.use('/api/googledrive', require('./routes/googleDrive'));
 
   /**
    * related to storage services

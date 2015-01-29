@@ -10,7 +10,11 @@ angular
   });
 
 
-function apiStorage() {
+function apiStorage($templateCache) {
+  var CONST_DOC = {
+    TITLE: 'Untitled.md',
+    CONTENT: $templateCache.get('defaultContent').replace(/^\s+/, '') || ''
+  };
   var _documentsList = getStorageItem('documentsList') || [];
   var _currentDocument = initCurrentDocument(getStorageItem('currentDocument'));
 
@@ -40,8 +44,8 @@ function apiStorage() {
 
     _currentDocument = doc || {
       id: + new Date,
-      title: 'Untitled.md',
-      content: ''
+      title: CONST_DOC.TITLE,
+      content: CONST_DOC.CONTENT
     };
     updateDocuments();
 

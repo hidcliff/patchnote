@@ -442,7 +442,7 @@ i.fa.sm {
 
 .content .edit-pane textarea {
   font-family: 'Open Sans', 'Lucida Grande';
-  font-size : 15px;
+  font-size : 14px;
   line-height : 25px;
   border : none;
   width : 100%;
@@ -464,7 +464,7 @@ i.fa.sm {
 
 .content .view-pane #preview {
   font-family: 'Gentium Book Basic', Georgia, Cambria, times, serif;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 28px;
   font-weight: 400;
 }

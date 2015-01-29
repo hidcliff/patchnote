@@ -11,7 +11,6 @@ function MainCtrl($scope, $http, apiStorage, apiService, placeholder, patchDialo
    */
   $scope.placeholder = placeholder;
 
-
   /**
    * For Editor
    */

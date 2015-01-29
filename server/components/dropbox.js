@@ -1,5 +1,6 @@
 
 var dbox = require('dbox');
+var auth = require('./auth');
 var config = require('../config');
 
 
@@ -23,7 +24,7 @@ module.exports = (function(appKey, appSecret) {
     if (client) {
       return true;
     } else {
-      var accessToken = req.cookies['accessToken'];
+      var accessToken = auth.getToken(req, 'dropbox');
       if (accessToken) {
         client = app.client(accessToken);
         return true;
@@ -58,7 +59,8 @@ module.exports = (function(appKey, appSecret) {
       var requestToken = req.cookies['requestToken'];
 
       app.accesstoken(requestToken, function(status, accessToken) {
-        res.cookie('accessToken', accessToken, {maxAge: (1000 * 60 * 60 * 24 * 365)});
+        auth.setToken(req, res, 'dropbox', accessToken);
+        //res.cookie('accessToken', accessToken, {maxAge: (1000 * 60 * 60 * 24 * 365)});
         res.clearCookie('requestToken', {path:'/'});
 
         next();
@@ -105,7 +107,8 @@ module.exports = (function(appKey, appSecret) {
 
     unlink: function(req, res, callback) {
       client = null;
-      res.clearCookie('accessToken', {path:'/'});
+      auth.clearToken(req, res, 'dropbox');
+      //res.clearCookie('accessToken', {path:'/'});
       callback({success: true}, 200);
     },
 
