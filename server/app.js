@@ -4,6 +4,7 @@
  * Dependencies
  */
 var express = require('express'),
+  favicon = require('serve-favicon'),
 	bodyParser = require('body-parser'),
 	methodOverride = require('method-override'),
 	cookieParser = require('cookie-parser'),
@@ -42,6 +43,7 @@ if (env === 'production') {
 	// TODO
 }
 
+app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
 app.use(express.static(path.join(config.root, 'public')));
 app.set('appPath', path.join(config.root, 'public'));
 app.use(morgan('dev'));

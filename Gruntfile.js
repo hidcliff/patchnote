@@ -128,7 +128,7 @@ module.exports = function(grunt) {
             expand: true,
             cwd: '<%=app.public%>',
             src: [
-              '*.{ico,png.txt}',
+              '*.{ico,png,txt}',
               'fonts/**/*',     // if you're using the fonts of Bootstrap or FontAwesome, copy the fonts to this fonts directory.
               'html/**/*',
               'img/**/*',
